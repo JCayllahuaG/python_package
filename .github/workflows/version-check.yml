@@ -28,7 +28,7 @@ jobs:
         VERSION_PR=$(poetry version -s)
         echo "Version in PR branch: $VERSION_PR"
         echo "VERSION_PR=$VERSION_PR" >> $GITHUB_ENV
-      working-directory: ./config_keyvault
+      working-directory: ./python_package
 
     - name: Checkout main branch
       run: |
@@ -40,7 +40,7 @@ jobs:
         VERSION_MAIN=$(poetry version -s)
         echo "Current version in main: $VERSION_MAIN"
         echo "VERSION_MAIN=$VERSION_MAIN" >> $GITHUB_ENV
-      working-directory: ./config_keyvault
+      working-directory: ./python_package
 
 
     - name: Check if version is greater than main
