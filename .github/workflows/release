@@ -1,0 +1,72 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main  # Trigger when changes are pushed to master
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Install dependencies
+      run: poetry install
+      working-directory: ./config_keyvault  
+
+    - name: Build package
+      run: |
+        poetry build
+        ls ./dist/
+      working-directory: ./config_keyvault  
+      
+    - name: Get version from pyproject.toml
+      run: |
+        VERSION=$(poetry version -s)
+        echo "Version to tag: $VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+      working-directory: ./config_keyvault
+
+    - name: Create Git tag
+      run: |
+        git tag $VERSION
+        git push origin $VERSION
+      env:
+        VERSION: ${{ env.VERSION }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create GitHub release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
+        body: |
+          Automatic release for version ${{ env.VERSION }}
+        draft: false
+        prerelease: false
+
+    - name: Upload release assets
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./config_keyvault/dist/config_keyvault-${{ env.VERSION }}-py3-none-any.whl  # Adjust based on your project
+        asset_name: config_keyvault-${{ env.VERSION }}-py3-none-any.whl
+        asset_content_type: application/zip
