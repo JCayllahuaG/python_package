@@ -1,0 +1,59 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches:
+      - main  # Trigger on PR to main
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Get version from PR branch
+      run: |
+        VERSION_PR=$(poetry version -s)
+        echo "Version in PR branch: $VERSION_PR"
+        echo "VERSION_PR=$VERSION_PR" >> $GITHUB_ENV
+      working-directory: ./python_package
+
+    - name: Checkout main branch
+      run: |
+        git fetch origin main
+        git checkout origin/main 
+        
+    - name: Get current version in main
+      run: |
+        VERSION_MAIN=$(poetry version -s)
+        echo "Current version in main: $VERSION_MAIN"
+        echo "VERSION_MAIN=$VERSION_MAIN" >> $GITHUB_ENV
+      working-directory: ./python_package
+
+
+    - name: Check if version is greater than main
+      run: |
+        if [ "$VERSION_PR" == "$VERSION_MAIN" ]; then
+          echo "Error: Version in PR must be different from main version"
+          exit 1
+        fi
+        if [ "$(echo $VERSION_PR | awk -F. '{print $1$2$3}')" -le "$(echo $VERSION_MAIN | awk -F. '{print $1$2$3}')" ]; then
+          echo "Error: Version in PR must be greater than main version"
+          exit 1
+        fi
+        echo "Version check passed."
+      env:
+        VERSION_PR: ${{ env.VERSION_PR }}
+        VERSION_MAIN: ${{ env.VERSION_MAIN }}
