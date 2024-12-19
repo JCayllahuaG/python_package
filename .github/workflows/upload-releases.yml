@@ -52,23 +52,31 @@ jobs:
         
     - name: Upload to GitHub Pages
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Use your PAT secret here
       run: |
-          TARGET_DIR=${{ env.package_name }}/v${{ env.package_version }}
-          
-          mkdir -p ${TARGET_DIR}
-          cp dist/* ${TARGET_DIR}/
-  
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-  
-          git clone https://github.com/testing-organization-jcayllahua/package-artifacts.git
-          cd package-artifacts
-  
-          git checkout main
-          cp -r ../${TARGET_DIR} .
-          git add .
-          git commit -m "Add artifacts for ${{ env.package_name }} version ${{ env.package_version }}"
-          git push origin main
+        TARGET_DIR=${{ env.package_name }}/v${{ env.package_version }}
+        
+        # Create the target directory and copy the build artifacts
+        mkdir -p ${TARGET_DIR}
+        cp dist/* ${TARGET_DIR}/
+        
+        # Configure git user details
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        
+        # Clone the target repository using the GH_PAT for authentication
+        git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/testing-organization-jcayllahua/package-artifacts.git
+        
+        cd package-artifacts
+        git checkout main
+        
+        # Copy the build artifacts into the repository
+        cp -r ../${TARGET_DIR} .  # Copy the newly built artifacts
+        git add .
+        git commit -m "Add artifacts for ${{ env.package_name }} version ${{ env.package_version }}"
+        
+        # Push to the remote repository using the GH_PAT for authentication
+        git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/testing-organization-jcayllahua/package-artifacts.git
     
-      
+        
+          
