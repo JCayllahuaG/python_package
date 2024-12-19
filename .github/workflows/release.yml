@@ -52,4 +52,13 @@ jobs:
           Automatic release for version ${{ env.VERSION }}
         draft: false
         prerelease: false
+        
+    - name: Trigger the upload release artifacts workflow
+      uses: peter-evans/workflow-dispatch@v1
+      with:
+        workflow: "Upload Release Artifacts"
+        ref: main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
