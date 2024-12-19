@@ -53,11 +53,10 @@ jobs:
         draft: false
         prerelease: false
         
-    - name: Trigger the upload release artifacts workflow
-      uses: peter-evans/workflow-dispatch@v1
+    - name: Trigger upload release workflow
+      uses: benc-uk/workflow-dispatch@v1
       with:
-        workflow: "Upload Release Artifacts"
-        ref: main
+        workflow: Upload Release Artifacts
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
