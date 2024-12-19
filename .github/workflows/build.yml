@@ -36,4 +36,4 @@ jobs:
                   TWINE_PASSWORD: ${{ secrets.GH_PACKAGES_TOKEN }}
               run: |
                     pip install twine
-                    python -m twine upload --repository-url https://maven.pkg.github.com/JCayllahuaG/ dist/*
+                    python -m twine upload --repository-url https://maven.pkg.github.com/JCayllahuaG/python_package dist/*
