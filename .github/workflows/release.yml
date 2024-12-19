@@ -25,20 +25,17 @@ jobs:
 
     - name: Install dependencies
       run: poetry install
-      working-directory: ./python_package  
 
     - name: Build package
       run: |
         poetry build
         ls ./dist/
-      working-directory: ./python_package  
       
     - name: Get version from pyproject.toml
       run: |
         VERSION=$(poetry version -s)
         echo "Version to tag: $VERSION"
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-      working-directory: ./python_package
 
     - name: Create Git tag
       run: |
@@ -67,6 +64,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./python_package/dist/python_package-${{ env.VERSION }}-py3-none-any.whl  # Adjust based on your project
+        asset_path: ./dist/python_package-${{ env.VERSION }}-py3-none-any.whl  # Adjust based on your project
         asset_name: python_package-${{ env.VERSION }}-py3-none-any.whl
         asset_content_type: application/zip
