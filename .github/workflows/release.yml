@@ -25,11 +25,6 @@ jobs:
 
     - name: Install dependencies
       run: poetry install
-
-    - name: Build package
-      run: |
-        poetry build
-        ls ./dist/
       
     - name: Get version from pyproject.toml
       run: |
@@ -58,12 +53,3 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload release assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/python_package-${{ env.VERSION }}-py3-none-any.whl  # Adjust based on your project
-        asset_name: python_package-${{ env.VERSION }}-py3-none-any.whl
-        asset_content_type: application/zip
