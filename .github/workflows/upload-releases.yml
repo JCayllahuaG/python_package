@@ -2,7 +2,7 @@ name: Upload Release Artifacts
 
 on:
   release:
-    types: [published]
+    types: [created, published]
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
