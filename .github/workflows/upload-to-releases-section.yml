@@ -1,0 +1,83 @@
+name: Upload Artifacts to Artifactory Repository Releases Section
+
+on:
+  release:
+    types: [published]
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies & poetry
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install
+
+    - name: Install toml module
+      run: |
+        poetry add toml --dev
+
+    - name: Get package name
+      id: package_name
+      run: |
+        PACKAGE_NAME=$(poetry run python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['name'])")
+        echo "package_name=${PACKAGE_NAME}" >> $GITHUB_ENV
+        
+    - name: Print extracted package name
+      run: echo "Package name is ${{ env.package_name }}"
+
+    - name: Get package version
+      id: package_version
+      run: |
+        PACKAGE_VERSION=$(poetry version | cut -d' ' -f2)
+        echo "package_version=${PACKAGE_VERSION}" >> $GITHUB_ENV
+
+    - name: Print extracted package version
+      run: echo "Package version is ${{ env.package_version }}"
+
+    - name: Build the package
+      run: |
+        poetry build
+        
+    - name: Create Release in Artifactory Repository
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      with:
+        tag_name: v${{ env.package_version }}
+        release_name: "${{env.package_name}} Release ${{ env.package_version }}"
+        draft: false
+        prerelease: false
+        repository: testing-organization-jcayllahua/package-artifacts
+
+    - name: Upload Release Asset (wheel)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/${{ env.package_name }}-${{ env.package_version }}-py3-none-any.whl
+        asset_name: ${{ env.package_name }}-${{ env.package_version }}-py3-none-any.whl
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset (tar.gz)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/${{ env.package_name }}-${{ env.package_version }}.tar.gz
+        asset_name: ${{ env.package_name }}-${{ env.package_version }}.tar.gz
+        asset_content_type: application/gzip
