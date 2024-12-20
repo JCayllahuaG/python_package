@@ -56,7 +56,7 @@ jobs:
     - name: Trigger upload release workflow
       uses: benc-uk/workflow-dispatch@v1
       with:
-        workflow: Upload Release Artifacts
+        workflow: Upload Artifacts to Artifactory Repository Releases Section
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
