@@ -66,5 +66,6 @@ jobs:
         name: "${{env.package_name}} Release ${{ env.package_version }}"
         draft: false
         prerelease: false
-        repo: testing-organization-jcayllahua/package-artifacts
+        repo: package-artifacts
+        owner: testing-organization-jcayllahua
         
