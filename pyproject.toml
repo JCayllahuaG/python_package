@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-package"
-version = "1.0.8"
+version = "1.0.9"
 description = ""
 authors = ["JCayllahuaG <u202019558@upc.edu.pe>"]
 readme = "README.md"
