@@ -52,6 +52,3 @@ jobs:
           Automatic release for version ${{ env.VERSION }}
         draft: true
         prerelease: false
-        
-
-
