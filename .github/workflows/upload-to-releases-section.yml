@@ -3,6 +3,7 @@ name: Upload Artifacts to Artifactory Repository Releases Section
 on:
   release:
     types: [published]
+  workflow_dispatch:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
