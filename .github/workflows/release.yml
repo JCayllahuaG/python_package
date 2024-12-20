@@ -50,14 +50,8 @@ jobs:
         release_name: Release ${{ env.VERSION }}
         body: |
           Automatic release for version ${{ env.VERSION }}
-        draft: false
+        draft: true
         prerelease: false
         
-    - name: Trigger upload release workflow
-      uses: benc-uk/workflow-dispatch@v1
-      with:
-        workflow: Upload Artifacts to Artifactory Repository Releases Section
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
