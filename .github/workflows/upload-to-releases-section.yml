@@ -58,8 +58,6 @@ jobs:
     - name: Create Release in Artifactory Repository
       id: create_release
       uses: ncipollo/release-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }} # This token is provided by Actions, you do not need to create your own token
       with:
         tag: ${{ env.package_version }}
         artifacts: "dist/*.tar.gz, dist/*.whl"
@@ -68,4 +66,5 @@ jobs:
         prerelease: false
         repo: package-artifacts
         owner: testing-organization-jcayllahua
+        token: ${{ secrets.GH_PAT }}
         
