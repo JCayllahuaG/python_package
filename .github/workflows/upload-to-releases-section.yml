@@ -50,19 +50,23 @@ jobs:
     - name: Build the package
       run: |
         poetry build
-        
-    - name: Create Release in Artifactory Repository
+
+    - name: List dist
+      run: |
+        ls
+
+    - name: Create Releasein Artifactory Repository
       id: create_release
-      uses: actions/create-release@v1
+      uses: comnoco/create-release@v2
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v${{ env.package_version }}
+        tag_name: ${{ github.ref }}
         release_name: "${{env.package_name}} Release ${{ env.package_version }}"
         draft: false
         prerelease: false
         repository: testing-organization-jcayllahua/package-artifacts
-
+        
     - name: Upload Release Asset (wheel)
       uses: actions/upload-release-asset@v1
       env:
@@ -72,13 +76,3 @@ jobs:
         asset_path: ./dist/${{ env.package_name }}-${{ env.package_version }}-py3-none-any.whl
         asset_name: ${{ env.package_name }}-${{ env.package_version }}-py3-none-any.whl
         asset_content_type: application/zip
-
-    - name: Upload Release Asset (tar.gz)
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/${{ env.package_name }}-${{ env.package_version }}.tar.gz
-        asset_name: ${{ env.package_name }}-${{ env.package_version }}.tar.gz
-        asset_content_type: application/gzip
