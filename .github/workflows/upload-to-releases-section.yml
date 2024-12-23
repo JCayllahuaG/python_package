@@ -65,6 +65,6 @@ jobs:
         draft: false
         prerelease: false
         repo: package-artifacts
-        owner: testing-organization-jcayllahua
+        owner: JCayllahuaG
         token: ${{ secrets.GH_PAT }}
         
