@@ -1,10 +1,25 @@
 # Pull Request Template
 
-Please go to the **Preview** tab and select the appropriate sub-template:
+## Description
+<!-- Please include a summary of the change and which issue is fixed. -->
 
-- [Group A Template](?expand=1&template=pull_request_bugfix.md)
-- [Group B Template](?expand=1&template=pull_request_feature.md)
+## Type of Change
+<!-- Please delete options that are not relevant. -->
+- [ ] 🐛 Bugfix
+- [ ] ✨ New feature
+- [ ] 📄 Documentation update
+- [ ] 🔧 Other (please specify)
 
----
+## How has this been tested?
+<!-- Please describe the tests that you ran to verify your changes. -->
 
-If you're unsure which template to use, please consult the project's contribution guidelines.
+## Checklist:
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation (if applicable)
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+
+## Additional Notes
+<!-- Any other information that is useful to include -->
