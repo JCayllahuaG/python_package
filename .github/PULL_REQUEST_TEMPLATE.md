@@ -6,14 +6,22 @@
 ## Type of Change
 <!-- Please delete options that are not relevant. -->
 - [ ] 🐛 Bugfix
-- [ ] ✨ New feature
+- [ ] ➕ New feature
 - [ ] 📄 Documentation update
-- [ ] 🔧 Other (please specify)
+- [ ] 📦 Other (please specify)
+
+## Version Update
+<!-- If this PR requires a version update, please make sure to update the version number in the following files: -->
+- [ ] `build.gradle`
+- [ ] `application.yml` (if applicable)
+- [ ] Other files (please specify)
 
 ## How has this been tested?
 <!-- Please describe the tests that you ran to verify your changes. -->
 
+/
 ## Checklist:
+- [X] I have updated the version number in the required files (e.g., `build.gradle`, `application.yml`)
 - [ ] My code follows the style guidelines of this project
 - [ ] I have performed a self-review of my code
 - [ ] I have commented my code, particularly in hard-to-understand areas
