@@ -1,4 +1,5 @@
-# Pull Request Template
+# Pull Request Title
+<!-- Please provide a brief and descriptive title for your pull request. -->
 
 ## Description
 <!-- Please include a summary of the change and which issue is fixed. -->
