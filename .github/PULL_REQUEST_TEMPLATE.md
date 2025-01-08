@@ -6,6 +6,7 @@
 
 ## Type of Change
 <!-- Please delete options that are not relevant. -->
+- [ ] [🐛 Bugfix](&template=pull_request_bugfix.md)
 - [ ] 🐛 Bugfix
 - [ ] ➕ New feature
 - [ ] 📄 Documentation update
